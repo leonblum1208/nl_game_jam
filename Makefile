@@ -1,2 +1,5 @@
 game:
-	poetry run python -m src
+	python3 -m src
+
+install:
+	pip install -r requirements.txt
