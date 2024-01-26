@@ -1,0 +1,5 @@
+.direnv
+try_stuff.py
+__pycache__
+.ipynb_checkpoints
+.vscode
