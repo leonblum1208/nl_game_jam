@@ -7,7 +7,7 @@ graphics_folder = Path(__file__).parent / "graphics"
 
 
 class Image(BaseModel):
-    image_name: str = "Right.png"  # ["Right.png", "Left.png", "Up.png", "Down.png"]
+    image_name: str = "RIGHT.png"  # ["RIGHT.png", "LEFT.png", "UP.png", "DOWN.png"]
 
     def load(self):
         image_path = graphics_folder / self.image_name

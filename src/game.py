@@ -17,12 +17,12 @@ class Game(BaseModel):
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.player.move(-1, 0)
+                    self.player.turn(-1)
                 elif event.key == pygame.K_RIGHT:
-                    self.player.move(1, 0)
+                    self.player.turn(1)
                 elif event.key == pygame.K_UP:
-                    self.player.move(0, -1)
+                    self.player.move(1)
                 elif event.key == pygame.K_DOWN:
-                    self.player.move(0, 1)
+                    self.player.move(-1)
                 elif event.key == pygame.K_r:
                     self.grid.update(turns=1)
