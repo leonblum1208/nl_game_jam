@@ -19,14 +19,18 @@ class TilePosition(BaseModel):
     def y0(self) -> int:
         return self.row * TILE_HEIGHT_PIX
 
+    def x0_plus_gap(self, rel_width: float) -> int:
+        return self.x0 + ((1 - rel_width) * TILE_WIDTH_PIX) / 2
+
+    def y0_plus_gap(self,  rel_height: float) -> int:
+        return self.y0 + ((1 - rel_height) * TILE_HEIGHT_PIX) / 2
+
     def get_rect(
         self, rel_width: float, rel_height: float
     ) -> Tuple[int, int, int, int]:
-        x_gap = ((1 - rel_width) * TILE_WIDTH_PIX) / 2
-        y_gap = ((1 - rel_height) * TILE_HEIGHT_PIX) / 2
         return (
-            self.x0 + x_gap,
-            self.y0 + y_gap,
+            self.x0_plus_gap(rel_width),
+            self.y0_plus_gap(rel_height),
             TILE_WIDTH_PIX * rel_width,
             TILE_HEIGHT_PIX * rel_height,
         )
@@ -41,7 +45,7 @@ class TileData(BaseModel):
 
 class BaseTileData(TileData):
     rel_width: float = 1
-    rel_height: float = 1
+    rel_height: float = 0.99
 
 
 class AddOnData(TileData):
@@ -73,6 +77,7 @@ class Tile(BaseModel):
         if image:
             scaled_image_surface = image.scale(size=min(self.base.rel_height, self.base.rel_width))
             scaled_image_rect = scaled_image_surface.get_rect()
+            scaled_image_rect.topleft = (pos.x0_plus_gap(rel_width=self.base.rel_width), pos.y0_plus_gap(rel_height=self.base.rel_height))
             screen.blit(scaled_image_surface, scaled_image_rect)
         elif self.base.color:
             pygame.draw.rect(
