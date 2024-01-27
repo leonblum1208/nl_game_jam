@@ -5,7 +5,9 @@ import pygame
 from pydantic import BaseModel
 from enum import Enum
 from src.art.arrow import Arrow
+from src.player.player_directions import PlayerDirection
 from src.art.image import Image
+from src.art.bodo import BODOS_IMAGES
 from src.art.color import *
 from src.const import *
 from pathlib import Path
@@ -64,13 +66,12 @@ class Player(BaseModel):
 
     @property
     def image(self) -> Image:
-        return Image(image_name=f"Robo-{self.pos.face_direction.name}.png")
+        return BODOS_IMAGES[self.face_direction]
 
     def handle_movement(self, movements: List[Movement], grid: Grid):
         for movement in movements:
             new_pos = movement.execute(self.pos)
             movement_tile = grid.get_tile(new_pos)
-
             if movement_tile.add_on_type == AddOn.HOLE:
                 raise GameOver()
             if movement_tile.add_on_type == AddOn.CHEST:
@@ -80,10 +81,9 @@ class Player(BaseModel):
             self.movement_history.append(movement)
             self.pos_history.append(new_pos)
 
+
     def draw(self, screen):
-        image_surface = self.image.load()
-        image_rect = image_surface.get_rect()
-        scaled_image_surface = self.image.scale(image_surface, image_rect, self.size)
+        scaled_image_surface = self.image.scale(self.size)
         scaled_image_rect = scaled_image_surface.get_rect()
         scaled_image_rect.topleft = (
             self.pos.col * TILE_WIDTH_PIX + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
@@ -91,7 +91,3 @@ class Player(BaseModel):
             + (TILE_HEIGHT_PIX - scaled_image_rect.height) / 2,
         )
         screen.blit(scaled_image_surface, scaled_image_rect)
-        # pos_x = self.col * TILE_WIDTH_PIX + (TILE_WIDTH_PIX - self.width)/2
-        # pos_y = self.row * TILE_HEIGHT_PIX + (TILE_HEIGHT_PIX - self.height) / 2
-        # pygame.draw.rect(screen, color, (pos_x, pos_y, self.width, self.height))
-        # self.arrow.draw(screen,pos_x, pos_y)

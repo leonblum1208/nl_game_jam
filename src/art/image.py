@@ -6,23 +6,28 @@ from src.const import *
 graphics_folder = Path(__file__).parent / "graphics"
 
 
+
 class Image(BaseModel):
-    image_name: str = "RIGHT.png"  # ["RIGHT.png", "LEFT.png", "UP.png", "DOWN.png"]
+    surface: pygame.Surface
+    rect: pygame.Rect
+    model_config = {"arbitrary_types_allowed":True}
 
-    def load(self):
-        image_path = graphics_folder / self.image_name
+    @classmethod
+    def from_path(cls, image_name: str):
+        image_path = graphics_folder / image_name
         image_surface = pygame.image.load(image_path)
-        return image_surface
+        image_rect = image_surface.get_rect()
+        return cls(surface=image_surface, rect=image_rect)
 
-    def scale(self, image_surface, image_rect, size):
-        scale_factor_width = TILE_WIDTH_PIX / image_rect.width
-        scale_factor_height = TILE_HEIGHT_PIX / image_rect.height
+    def scale(self, size):
+        scale_factor_width = TILE_WIDTH_PIX / self.rect.width
+        scale_factor_height = TILE_HEIGHT_PIX / self.rect.height
         scale_factor = min(scale_factor_width, scale_factor_height) * size
         scaled_image = pygame.transform.scale(
-            image_surface,
+            self.surface,
             (
-                int(image_rect.width * scale_factor),
-                int(image_rect.height * scale_factor),
+                int(self.rect.width * scale_factor),
+                int(self.rect.height * scale_factor),
             ),
         )
         return scaled_image
