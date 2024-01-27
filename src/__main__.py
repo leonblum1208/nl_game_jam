@@ -23,15 +23,9 @@ game = Game(player=player, grid=LEVEL_1)
 while True:
     game.handle_event()
 
-    # Fill the screen with black
     screen.fill(BLACK)
-
-    # Draw player
     game.grid.draw(screen=screen)
     game.player.draw(screen)
 
-    # Update the display
     pygame.display.flip()
-
-    # Cap the frame rate
     pygame.time.Clock().tick(60)

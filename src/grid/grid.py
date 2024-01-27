@@ -13,5 +13,9 @@ class Grid(BaseModel):
     rows: Deque[Row]
 
     def draw(self, screen: pygame.Surface) -> None:
+        for row, row_obj in enumerate(self.rows):
+            row_obj.draw(screen, row=row)
+
+    def update(self, turns: int = 1):
         for row in self.rows:
-            row.draw(screen)
+            row.update(turns=turns)

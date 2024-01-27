@@ -66,18 +66,17 @@ class AddOn(Enum):
 class Tile(BaseModel):
     base: BaseTileData = BaseTile.EMPTY
     add_on: AddOnData = AddOn.NONE
-    pos: TilePosition
 
-    def draw(self, screen: pygame.Surface) -> None:
+    def draw(self, screen: pygame.Surface, pos: TilePosition) -> None:
         if self.base.color:
             pygame.draw.rect(
                 screen,
                 self.base.color,
-                self.pos.get_rect(self.base.rel_width, self.base.rel_height),
+                pos.get_rect(self.base.rel_width, self.base.rel_height),
             )
         if self.add_on.color:
             pygame.draw.rect(
                 screen,
                 self.add_on.color,
-                self.pos.get_rect(self.add_on.rel_width, self.add_on.rel_height),
+                pos.get_rect(self.add_on.rel_width, self.add_on.rel_height),
             )
