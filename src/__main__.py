@@ -1,8 +1,12 @@
 import pygame
 import sys
+from src.game import Game, Player
 
 # Initialize Pygame
 pygame.init()
+
+# Parameters
+TILE_SIZE = 50
 
 # Set up display
 width, height = 1000, 600
@@ -13,33 +17,20 @@ pygame.display.set_caption("Movable Rectangle")
 black = (0, 0, 0)
 white = (255, 255, 255)
 
-# Set up the rectangle
-rect_width, rect_height = 50, 50
-rect_x, rect_y = (width - rect_width) // 2, (height - rect_height) // 2
-rect_speed = 5
+# Set up the player
+player_col_start, player_row_start = 0, 0
+player = Player(width=25, height=20, col=player_col_start, row=player_row_start)
+game = Game(player=player)
 
 # Game loop
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and rect_x > 0:
-        rect_x -= rect_speed
-    if keys[pygame.K_RIGHT] and rect_x < width - rect_width:
-        rect_x += rect_speed
-    if keys[pygame.K_UP] and rect_y > 0:
-        rect_y -= rect_speed
-    if keys[pygame.K_DOWN] and rect_y < height - rect_height:
-        rect_y += rect_speed
+    game.handle_event()
 
     # Fill the screen with black
     screen.fill(black)
 
-    # Draw the rectangle
-    pygame.draw.rect(screen, white, (rect_x, rect_y, rect_width, rect_height))
+    #Draw player
+    player.draw(screen, white, TILE_SIZE)
 
     # Update the display
     pygame.display.flip()
