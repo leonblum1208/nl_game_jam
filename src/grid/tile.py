@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from enum import Enum
 from src.art.color import *
 from src.const import *
+from src.art.image import Image
 
 
 class TilePosition(BaseModel):
@@ -35,11 +36,12 @@ class TileData(BaseModel):
     color: Optional[tuple] = None
     rel_width: float = 1
     rel_height: float = 1
+    model_config = {"arbitrary_types_allowed": True}
 
 
 class BaseTileData(TileData):
-    rel_width: float = 0.9
-    rel_height: float = 0.9
+    rel_width: float = 1
+    rel_height: float = 1
 
 
 class AddOnData(TileData):
@@ -67,8 +69,12 @@ class Tile(BaseModel):
     base: BaseTileData = BaseTile.EMPTY
     add_on: AddOnData = AddOn.NONE
 
-    def draw(self, screen: pygame.Surface, pos: TilePosition) -> None:
-        if self.base.color:
+    def draw(self, screen: pygame.Surface, pos: TilePosition, image: Optional[Image] = None) -> None:
+        if image:
+            scaled_image_surface = image.scale(size=min(self.base.rel_height, self.base.rel_width))
+            scaled_image_rect = scaled_image_surface.get_rect()
+            screen.blit(scaled_image_surface, scaled_image_rect)
+        elif self.base.color:
             pygame.draw.rect(
                 screen,
                 self.base.color,

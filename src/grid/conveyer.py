@@ -4,11 +4,9 @@ from typing import List, Deque
 from pydantic import BaseModel
 import pygame
 from src.grid.tile import AddOn, AddOnData, BaseTileData, Tile, BaseTile, TilePosition
-
-
-class ConveyerDirection(Enum):
-    RIGHT: int = 1
-    LEFT: int = -1
+from src.art.image import Image
+from src.art.conveyer_belt import CONVEYER_IMAGES
+from src.grid.conveyer_direction import ConveyerDirection
 
 
 class RowDefinition(BaseModel):
@@ -19,12 +17,16 @@ class RowDefinition(BaseModel):
 class Row(BaseModel):
     tiles: Deque[Tile]
 
+    @property
+    def image(self) -> None:
+        return None
+
     def update(self, turns: int = 1) -> None:
         _ = turns
 
     def draw(self, screen: pygame.Surface, row: int) -> None:
         for col, tile in enumerate(self.tiles):
-            tile.draw(screen, TilePosition(row=row, col=col))
+            tile.draw(screen, TilePosition(row=row, col=col), image=self.image)
 
     @classmethod
     def from_tile_lists(cls, row: int, row_def: RowDefinition) -> "Row":
@@ -44,6 +46,10 @@ class Row(BaseModel):
 class Conveyer(Row):
     direction: ConveyerDirection = ConveyerDirection.LEFT
     speed: int = 1
+
+    @property
+    def image(self) -> Image:
+        return CONVEYER_IMAGES[self.direction]
 
     def update(self, turns: int = 1) -> None:
         self.tiles.rotate(self.direction.value * turns)

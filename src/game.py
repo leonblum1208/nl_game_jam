@@ -24,5 +24,4 @@ class Game(BaseModel):
                     self.player.move(1)
                 elif event.key == pygame.K_DOWN:
                     self.player.move(-1)
-                elif event.key == pygame.K_r:
-                    self.grid.update(turns=1)
+
