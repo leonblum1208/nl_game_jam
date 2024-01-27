@@ -10,8 +10,8 @@ from src.grid.conveyer_direction import ConveyerDirection
 
 
 class RowDefinition(BaseModel):
-    base_tiles: List[BaseTileData]
-    add_ons: List[AddOnData]
+    base_tiles: List[BaseTile]
+    add_ons: List[AddOn]
 
 
 class Row(BaseModel):
@@ -35,8 +35,8 @@ class Row(BaseModel):
             zip(row_def.base_tiles, row_def.add_ons)
         ):
             tile = Tile(
-                base=base_tile,
-                add_on=add_on,
+                base_type=base_tile,
+                add_on_type=add_on,
                 pos=TilePosition(row=row, col=col),
             )
             tiles.append(tile)
@@ -65,8 +65,8 @@ class Conveyer(Row):
         tiles = deque()
         for col, add_on in enumerate(add_ons):
             tile = Tile(
-                base=BaseTile.CONVEYER.value,
-                add_on=add_on,
+                base_type=BaseTile.CONVEYER,
+                add_on_type=add_on,
                 pos=TilePosition(row=row, col=col),
             )
             tiles.append(tile)
