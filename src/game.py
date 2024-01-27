@@ -1,10 +1,13 @@
 import pygame
 import sys
 from pydantic import BaseModel
+from src.grid.grid import Grid
 from src.player.player import Player
+
 
 class Game(BaseModel):
     player: Player
+    grid: Grid
 
     def handle_event(self):
         for event in pygame.event.get():

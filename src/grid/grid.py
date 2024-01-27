@@ -1,18 +1,17 @@
+from collections import deque
 from pydantic import BaseModel
 import pygame
+from typing import Deque
 
 from src.art.color import WHITE
+from src.grid.conveyer import Row
 
 
 class Grid(BaseModel):
-    rows:int
-    cols:int
-    pixel_per_tile:int
-    
+    n_rows: int
+    n_cols: int
+    rows: Deque[Row]
+
     def draw(self, screen: pygame.Surface) -> None:
-        for col in range(self.cols):
-            for row in range(self.rows):
-                
-                pygame.draw.rect(screen, WHITE, (col*self.pixel_per_tile, row*self.pixel_per_tile, self.pixel_per_tile/2, self.pixel_per_tile/2))
-        
-        
+        for row in self.rows:
+            row.draw(screen)
