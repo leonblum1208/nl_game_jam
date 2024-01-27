@@ -5,20 +5,21 @@ from src.grid.conveyer import Row, Conveyer, RowDefinition, ConveyerDirection
 from src.grid.tile import *
 from src.art.image import Image
 from src.game import Player
+from src.player.player_info import PlayerDirection, PlayerPosition
 from src.player.player import PlayerDirection
 
 
 start_row = RowDefinition(
-    base_tiles=[BaseTile.PLATFORM.value] * 3 + [BaseTile.START.value],
-    add_ons=[AddOn.NONE.value] * 4,
+    base_tiles=[BaseTile.PLATFORM] * 3 + [BaseTile.START],
+    add_ons=[AddOn.NONE] * 4,
 )
-conv_1 = [AddOn.NONE.value] * 3 + [AddOn.HOLE.value]
-conv_2 = [AddOn.NONE.value, AddOn.CHEST.value, AddOn.NONE.value, AddOn.NONE.value]
-conv_3 = [AddOn.HOLE.value] + [AddOn.NONE.value] * 3
-conv_4 = [AddOn.NONE.value] * 4
+conv_1 = [AddOn.NONE] * 3 + [AddOn.HOLE]
+conv_2 = [AddOn.NONE, AddOn.CHEST, AddOn.NONE, AddOn.NONE]
+conv_3 = [AddOn.HOLE] + [AddOn.NONE] * 3
+conv_4 = [AddOn.NONE] * 4
 end_row = RowDefinition(
-    base_tiles=[BaseTile.END.value] + [BaseTile.PLATFORM.value] * 3,
-    add_ons=[AddOn.NONE.value] * 4,
+    base_tiles=[BaseTile.END] + [BaseTile.PLATFORM] * 3,
+    add_ons=[AddOn.NONE] * 4,
 )
 
 rows = deque(
@@ -39,4 +40,6 @@ grid = Grid(
     rows=rows,
 )
 
-player = Player(col=3, row=5, face_direction=PlayerDirection.UP)
+player = Player(
+    pos=PlayerPosition(col=3, row=5, face_direction=PlayerDirection.UP)
+)

@@ -64,8 +64,14 @@ class AddOn(Enum):
 
 
 class Tile(BaseModel):
-    base: BaseTileData = BaseTile.EMPTY
-    add_on: AddOnData = AddOn.NONE
+    base_type:BaseTile
+    add_on_type:AddOn
+    @property
+    def base(self) -> BaseTileData:
+        return self.base_type.value
+    @property
+    def add_on(self) -> AddOnData:
+        return self.add_on_type.value
 
     def draw(self, screen: pygame.Surface, pos: TilePosition) -> None:
         if self.base.color:
