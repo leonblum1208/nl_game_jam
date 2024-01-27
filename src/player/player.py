@@ -66,7 +66,7 @@ class Player(BaseModel):
 
     @property
     def image(self) -> Image:
-        return BODOS_IMAGES[self.face_direction]
+        return BODOS_IMAGES[self.pos.face_direction]
 
     def handle_movement(self, movements: List[Movement], grid: Grid):
         for movement in movements:

@@ -6,19 +6,20 @@ from src.grid.tile import *
 from src.art.image import Image
 from src.game import Player
 from src.player.player import PlayerDirection
+from src.player.player_info import PlayerPosition
 
 
 start_row = RowDefinition(
-    base_tiles=[BaseTile.EMPTY.value] * 7 + [BaseTile.START.value],
-    add_ons=[AddOn.NONE.value] * 8,
+    base_tiles=[BaseTile.EMPTY] * 7 + [BaseTile.START],
+    add_ons=[AddOn.NONE] * 8,
 )
-conv_1 = [AddOn.NONE.value] * 7 + [AddOn.HOLE.value]
-conv_2 = [AddOn.NONE.value] * 2 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 5
-conv_3 = [AddOn.NONE.value] * 3 + [AddOn.HOLE.value] + [AddOn.NONE.value] * 4
-conv_4 = [AddOn.NONE.value] * 8
+conv_1 = [AddOn.NONE] * 7 + [AddOn.HOLE]
+conv_2 = [AddOn.NONE] * 2 + [AddOn.CHEST] + [AddOn.NONE] * 5
+conv_3 = [AddOn.NONE] * 3 + [AddOn.HOLE] + [AddOn.NONE] * 4
+conv_4 = [AddOn.NONE] * 8
 end_row = RowDefinition(
-    base_tiles=[BaseTile.END.value] + [BaseTile.EMPTY.value] * 7,
-    add_ons=[AddOn.NONE.value] * 8,
+    base_tiles=[BaseTile.END] + [BaseTile.EMPTY] * 7,
+    add_ons=[AddOn.NONE] * 8,
 )
 
 rows = deque(
@@ -40,4 +41,6 @@ grid = Grid(
     rows=rows,
 )
 
-player = Player(col=7, row=6, face_direction=PlayerDirection.UP)
+player = Player(
+    pos=PlayerPosition(col=7, row=6, face_direction=PlayerDirection.UP)
+)
