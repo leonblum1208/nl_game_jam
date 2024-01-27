@@ -17,14 +17,16 @@ class Player(BaseModel):
     size: int = 0.6
     col: int
     row: int
-    image: Image
-    face_direction: PlayerDirection = PlayerDirection.RIGHT
+    face_direction: PlayerDirection
     num_movements: int = 0
+
+    @property
+    def image(self) -> Image:
+        return Image(image_name = f"Robo-{self.face_direction.name}.png")
 
     def turn(self, direction_change):
         self.face_direction = PlayerDirection((self.face_direction.value + direction_change) % 4)
         print(self.face_direction.value)
-        self.image = Image(image_name = f"{self.face_direction.name}.png")
         self.num_movements += 1
 
     def move(self, step):

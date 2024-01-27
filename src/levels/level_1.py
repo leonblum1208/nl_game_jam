@@ -3,6 +3,9 @@ from typing import List
 from src.grid.grid import Grid
 from src.grid.conveyer import Row, Conveyer, RowDefinition, ConveyerDirection
 from src.grid.tile import *
+from src.art.image import Image
+from src.game import Player
+from src.player.player import PlayerDirection
 
 
 start_row = RowDefinition(
@@ -30,8 +33,10 @@ rows = deque(
 )
 
 
-LEVEL_1 = Grid(
+grid = Grid(
     n_rows=len(rows),
     n_cols=len(rows[0].tiles),
     rows=rows,
 )
+
+player = Player(col=3, row=5, face_direction=PlayerDirection.UP)
