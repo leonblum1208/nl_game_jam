@@ -5,7 +5,7 @@ from src.art.color import *
 from src.const import *
 from src.grid.grid import Grid
 from src.player.player import Player, GameOver
-from src.levels import level_1, level_2
+from src.levels import level_0, level_1, level_2
 import time
 
 

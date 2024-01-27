@@ -38,13 +38,13 @@ class TilePosition(BaseModel):
 
 class TileData(BaseModel):
     color: Optional[tuple] = None
-    rel_width: float = 1
-    rel_height: float = 1
+    rel_width: float = 0.99
+    rel_height: float = 0.99
     model_config = {"arbitrary_types_allowed": True}
 
 
 class BaseTileData(TileData):
-    rel_width: float = 1
+    rel_width: float = 0.99
     rel_height: float = 0.99
 
 
