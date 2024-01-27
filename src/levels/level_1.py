@@ -19,15 +19,15 @@ end_row = RowDefinition(
 )
 
 rows = deque(
-        [
-            Row.from_tile_lists(row=0, row_def=end_row),
-            Conveyer.from_add_on_list(1, conv_4),
-            Conveyer.from_add_on_list(2, conv_3),
-            Conveyer.from_add_on_list(3, conv_2),
-            Conveyer.from_add_on_list(4, conv_1),
-            Row.from_tile_lists(row=5, row_def=start_row),
-        ]
-    )
+    [
+        Row.from_tile_lists(row=0, row_def=end_row),
+        Conveyer.from_add_on_list(1, conv_4),
+        Conveyer.from_add_on_list(2, conv_3),
+        Conveyer.from_add_on_list(3, conv_2),
+        Conveyer.from_add_on_list(4, conv_1),
+        Row.from_tile_lists(row=5, row_def=start_row),
+    ]
+)
 
 
 LEVEL_1 = Grid(

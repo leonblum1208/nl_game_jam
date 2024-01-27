@@ -46,20 +46,21 @@ class AddOnData(TileData):
     rel_width: float = 0.5
     rel_height: float = 0.5
 
+
 class BaseTile(Enum):
-    EMPTY:BaseTileData = BaseTileData(color=BLACK)
-    CONVEYER:BaseTileData = BaseTileData(color=GREY)
-    START:BaseTileData = BaseTileData(color=ORANGE)
-    END:BaseTileData = BaseTileData(color=GREEN)
-    PLATFORM:BaseTileData = BaseTileData(color=DARK_GREY)
+    EMPTY: BaseTileData = BaseTileData(color=BLACK)
+    CONVEYER: BaseTileData = BaseTileData(color=GREY)
+    START: BaseTileData = BaseTileData(color=ORANGE)
+    END: BaseTileData = BaseTileData(color=GREEN)
+    PLATFORM: BaseTileData = BaseTileData(color=DARK_GREY)
 
 
 class AddOn(Enum):
-    NONE:AddOnData = AddOnData()
-    CHEST:AddOnData = AddOnData(color=BROWN)
-    HOLE:AddOnData = AddOnData(color=VERY_DARK_GREY)
-    LEFT_TURN:AddOnData = AddOnData(color=WHITE)
-    RIGHT_TURN:AddOnData = AddOnData(color=WHITE)
+    NONE: AddOnData = AddOnData()
+    CHEST: AddOnData = AddOnData(color=BROWN)
+    HOLE: AddOnData = AddOnData(color=VERY_DARK_GREY)
+    LEFT_TURN: AddOnData = AddOnData(color=WHITE)
+    RIGHT_TURN: AddOnData = AddOnData(color=WHITE)
 
 
 class Tile(BaseModel):

@@ -16,7 +16,7 @@ pygame.display.set_caption("Movable Rectangle")
 # Set up the player
 image = Image(image_name="Right.png")
 player_col_start, player_row_start = 0, 0
-player = Player(col=player_col_start, row=player_row_start, image = image)
+player = Player(col=player_col_start, row=player_row_start, image=image)
 game = Game(player=player, grid=LEVEL_1)
 
 # Game loop
