@@ -4,8 +4,9 @@ from src.game import Game
 from src.art.color import *
 from src.const import *
 from src.grid.grid import Grid
-import src.levels.level_1 as level_1
 from src.player.player import Player, GameOver
+from src.levels import level_1, level_2
+import time
 
 
 # Initialize Pygame
@@ -15,7 +16,7 @@ pygame.display.set_caption("Movable Rectangle")
 
 
 # Set up the player
-game = Game(player=level_1.player, grid=level_1.grid)
+game = Game(player=level_2.player, grid=level_2.grid)
 
 # Game loop
 while True:
@@ -24,6 +25,7 @@ while True:
     except GameOver:
         break
 
+    game.handle_event()
     screen.fill(BLACK)
     game.grid.draw(screen=screen)
     game.player.draw(screen)
