@@ -21,7 +21,7 @@ game_over_banner = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 game_over_banner.fill((0, 0, 0, 192))
 
 # Set up the game
-cur_level = level_3
+cur_level = level_2
 game = Game.from_player_and_grid(player=cur_level.player, grid=cur_level.grid)
 
 game_over_flag = False
@@ -87,15 +87,19 @@ while True:
             screen.blit(game_over_banner, (0, 0))
             pygame.display.flip()
             font = pygame.font.Font(None, 50)
-            text1 = font.render(f"CONGRATULATIONS! {last_msg.message}", True, WHITE)
+            text0 = font.render(f"CONGRATULATIONS! {last_msg.message}", True, WHITE)
+            text001 = font.render(f"", True, WHITE)
+            text01 = font.render(f"SCORE: {int(game.player.score)}", True, WHITE)
+            text1 = font.render(f"Net Energy Usage:{int(game.player.net_energy_usage)} - Num. Movements:{game.player.n_movements}", True, WHITE)
+            text12 = font.render(f"", True, WHITE)
             text2 = font.render(f"Press R to restart", True, WHITE)
             text3 = font.render(f"Press Q to quit", True, WHITE)
-            for row, text in enumerate((text1, text2, text3)):
+            for row, text in enumerate((text0, text001, text01,  text1, text12, text2, text3)):
                 screen.blit(
                     text,
                     (
                         WIDTH // 2 - text.get_width() // 2,
-                        (HEIGHT // 2 - text.get_height() // 2)
+                        (HEIGHT/2 // 2 - text.get_height() // 2)
                         + text.get_height() * row * 1.5,
                     ),
                 )

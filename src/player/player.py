@@ -115,6 +115,10 @@ class Player(BaseModel):
                 n_movements += 1
         return n_movements
 
+    @property
+    def score(self) -> float:
+        return 1000000/(self.n_movements * self.net_energy_usage)
+
     def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[GameOverMessage]):
         movements_done, positions_occupied, turn_grids = [], [], []
         player_movements_rev = list(reversed(player_movements))
