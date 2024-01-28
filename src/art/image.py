@@ -6,11 +6,10 @@ from src.const import *
 graphics_folder = Path(__file__).parent / "graphics"
 
 
-
 class Image(BaseModel):
     surface: pygame.Surface
     rect: pygame.Rect
-    model_config = {"arbitrary_types_allowed":True}
+    model_config = {"arbitrary_types_allowed": True}
 
     @classmethod
     def from_path(cls, image_name: str):

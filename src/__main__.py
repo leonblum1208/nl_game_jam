@@ -35,16 +35,27 @@ while True:
         text2 = font.render(f"Press R to restart", True, WHITE)
         text3 = font.render(f"Press Q to quit", True, WHITE)
         for row, text in enumerate((text1, text2, text3)):
-            screen.blit(text, (WIDTH // 2 - text.get_width() // 2, (HEIGHT // 2 - text.get_height() // 2) + text.get_height() * row * 1.5))
+            screen.blit(
+                text,
+                (
+                    WIDTH // 2 - text.get_width() // 2,
+                    (HEIGHT // 2 - text.get_height() // 2)
+                    + text.get_height() * row * 1.5,
+                ),
+            )
         pygame.display.flip()
         dont_reset = True
         while dont_reset:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
+                if event.type == pygame.QUIT or (
+                    event.type == pygame.KEYDOWN and event.key == pygame.K_q
+                ):
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                    game = Game.from_player_and_grid(player=cur_level.player, grid=cur_level.grid)
+                    game = Game.from_player_and_grid(
+                        player=cur_level.player, grid=cur_level.grid
+                    )
                     dont_reset = False
 
     screen.fill(BLACK)

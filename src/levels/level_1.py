@@ -40,6 +40,4 @@ grid = Grid(
     rows=rows,
 )
 
-player = Player(
-    pos=PlayerPosition(col=3, row=5, face_direction=PlayerDirection.UP)
-)
+player = Player(pos=PlayerPosition(col=3, row=5, face_direction=PlayerDirection.UP))
