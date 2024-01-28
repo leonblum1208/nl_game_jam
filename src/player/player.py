@@ -16,7 +16,7 @@ from copy import deepcopy
 from src.grid.grid import Grid
 from src.grid.tile import AddOn, BaseTile
 from src.player.player_info import PlayerDirection, PlayerPosition
-from src.const import GameOver
+from src.const import *
 
 
 class MovementInducer(Enum):
@@ -115,7 +115,7 @@ class Player(BaseModel):
                 n_movements += 1
         return n_movements
 
-    def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[str]):
+    def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[GameOverMessage]):
         movements_done, positions_occupied, turn_grids = [], [], []
         player_movements_rev = list(reversed(player_movements))
         while player_movements_rev:
@@ -129,10 +129,12 @@ class Player(BaseModel):
                 movements_done.append(movement)
                 positions_occupied.append(new_pos)
                 turn_grids.append(deepcopy(grid))
+                if movement_tile.base_type == BaseTile.END:
+                    game_over_messages.append(GameOverMessage(type= MessageType.SUCCESS, message="You reached the finish."))
                 if movement_tile.add_on_type == AddOn.HOLE:
-                    game_over_messages.append("You fell into a hole.")
+                    game_over_messages.append(GameOverMessage(type=MessageType.FAIL, message="You fell into a hole."))
                 if movement_tile.base_type == BaseTile.EMPTY:
-                    game_over_messages.append("You tried to walk on nothing")
+                    game_over_messages.append(GameOverMessage(type=MessageType.FAIL, message="You tried to walk on nothing"))
                 if movement_tile.add_on_type == AddOn.CHEST:
                     direction = PlayerDirection.get_direction_from_positions(
                         start=self.pos, end=new_pos

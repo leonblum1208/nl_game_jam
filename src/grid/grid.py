@@ -5,8 +5,8 @@ from typing import Deque, List, Optional
 
 from src.art.color import WHITE
 from src.grid.conveyer import Row
-from src.grid.tile import AddOn, BaseTile, Tile
-from src.const import GameOver
+from src.grid.tile import Tile, BaseTile, AddOn
+from src.const import *
 from src.player.player_info import PlayerPosition
 
 
