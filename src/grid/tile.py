@@ -70,7 +70,7 @@ class BaseTile(Enum):
 class AddOn(Enum):
     NONE: AddOnData = AddOnData()
     CHEST: AddOnData = AddOnData(color=BROWN, image_name="Kiste")
-    HOLE: AddOnData = AddOnData(color=VERY_DARK_GREY)
+    HOLE: AddOnData = AddOnData(color=VERY_DARK_GREY, image_name="Hole")
     LEFT_TURN: AddOnData = AddOnData(color=WHITE)
     RIGHT_TURN: AddOnData = AddOnData(color=WHITE)
 
