@@ -146,7 +146,7 @@ class Player(BaseModel):
         self.grid_history.append(turn_grids)
 
     def draw(self, screen, pos: PlayerPosition):
-        scaled_image_surface = self.image.scale(self.size)
+        scaled_image_surface = BODOS_IMAGES[pos.face_direction].scale(self.size)
         scaled_image_rect = scaled_image_surface.get_rect()
         scaled_image_rect.topleft = (
             pos.col * TILE_WIDTH_PIX

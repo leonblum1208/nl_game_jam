@@ -60,12 +60,12 @@ while True:
 
     if len(game.player.pos_history) > game.num_pos_sets:
         game.num_pos_sets += 1
-        for num_sub_movements in range(len(game.player.pos_history[-1])):
+        for pos, sub_grid in zip(game.player.pos_history[-1], game.player.grid_history[-1]):
             screen.fill(BLACK)
-            sub_grid = game.player.grid_history[-1][num_sub_movements]
             sub_grid.draw(screen=screen)
-            game.player.draw(screen=screen, pos=game.player.pos_history[-1][num_sub_movements])
+            game.player.draw(screen=screen, pos=pos)
             pygame.display.flip()
+            print(pos)
             time.sleep(0.2)
     screen.fill(BLACK)
     game.grid.draw(screen=screen)
