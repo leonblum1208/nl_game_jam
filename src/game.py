@@ -6,6 +6,7 @@ from src.grid.grid import Grid
 from src.player.player import Player, PlayerMove, PlayerTurn, Movement
 from src.grid.grid import Grid
 from copy import deepcopy
+from src.const import PIX_PER_TILE, WIDTH
 
 
 class Game(BaseModel):
@@ -23,16 +24,32 @@ class Game(BaseModel):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     self.movements.append(PlayerTurn(turn_direction=-1))
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_d:
                     self.movements.append(PlayerTurn(turn_direction=1))
-                elif event.key == pygame.K_UP:
-                    self.movements.append(PlayerMove(step=-1))
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_w:
                     self.movements.append(PlayerMove(step=1))
-                elif event.key == pygame.K_r:
+                elif event.key == pygame.K_s:
+                    self.movements.append(PlayerMove(step=-1))
+                elif event.key == pygame.K_q:
+                    self.movements.append(PlayerMove(step=0))
+                elif event.key == pygame.K_BACKSPACE:
+                    if self.movements:
+                        self.movements.pop()
+                elif event.key == pygame.K_RETURN:
                     self.player.handle_movement(
                         player_movements=self.movements, grid=self.grid
                     )
                     self.movements = []
+
+    def draw_movements(self, screen):
+        images_drawn = 0
+        for movement in self.movements:
+            image = movement.image
+            if image:
+                scaled_image_surface = image.scale(0.5)
+                scaled_image_rect = scaled_image_surface.get_rect()
+                scaled_image_rect.topleft = (WIDTH - scaled_image_rect.width, images_drawn * (scaled_image_rect.height * 1.05))
+                screen.blit(scaled_image_surface, scaled_image_rect)
+                images_drawn += 1

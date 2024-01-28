@@ -30,7 +30,7 @@ while True:
     except GameOver as e:
         screen.blit(game_over_banner, (0, 0))
         pygame.display.flip()
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, 50)
         text1 = font.render(f"GAME OVER! {e}", True, WHITE)
         text2 = font.render(f"Press R to restart", True, WHITE)
         text3 = font.render(f"Press Q to quit", True, WHITE)
@@ -61,6 +61,7 @@ while True:
     screen.fill(BLACK)
     game.grid.draw(screen=screen)
     game.player.draw(screen=screen)
+    game.draw_movements(screen=screen)
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)

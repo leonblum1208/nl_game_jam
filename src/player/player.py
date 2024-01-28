@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import List
+from typing import List, Optional
 import pygame
 from pydantic import BaseModel
 from enum import Enum
 from src.art.arrow import Arrow
 from src.player.player_info import PlayerDirection
 from src.art.image import Image
-from src.art.bodo import BODOS_IMAGES
+from src.art.const import BODOS_IMAGES, MOVE_IMAGES, TURN_IMAGES
 from src.art.color import *
 from src.const import *
 from pathlib import Path
@@ -24,6 +24,10 @@ class Movement(BaseModel):
     def execute(self, pos: PlayerPosition) -> None:
         raise NotImplementedError
 
+    @property
+    def image(self) -> Optional[Image]:
+        return None
+
 
 class PlayerTurn(Movement):
     energy_cost: float = 1
@@ -34,7 +38,9 @@ class PlayerTurn(Movement):
             (pos.face_direction.value + self.turn_direction) % 4
         )
         return PlayerPosition(col=pos.col, row=pos.row, face_direction=face_direction)
-
+    @property
+    def image(self) -> Optional[Image]:
+        return TURN_IMAGES[self.turn_direction]
 
 class PlayerMove(Movement):
     energy_cost: float = 2
@@ -49,13 +55,16 @@ class PlayerMove(Movement):
             row = pos.row
         elif pos.face_direction == PlayerDirection.UP:
             col = pos.col
-            row = pos.row + self.step
+            row = pos.row - self.step
         else:
             col = pos.col
-            row = pos.row - self.step
+            row = pos.row + self.step
 
         return PlayerPosition(col=col, row=row, face_direction=pos.face_direction)
 
+    @property
+    def image(self) -> Optional[Image]:
+        return MOVE_IMAGES[self.step]
 
 class PlayerForceMove(Movement):
     energy_cost: float = 0
@@ -88,14 +97,17 @@ class Player(BaseModel):
 
     def handle_movement(self, player_movements: List[Movement], grid: Grid):
         movements_done, positions_occupied = [], []
-        while player_movements:
-            player_movement = player_movements.pop()
+        player_movements_rev = list(reversed(player_movements))
+        while player_movements_rev:
+            player_movement = player_movements_rev.pop()
             turn_movements = [player_movement]
             conveyers_moved = False
             while turn_movements:
                 movement = turn_movements.pop()
                 new_pos = movement.execute(self.pos)
                 movement_tile = grid.get_tile(new_pos)
+                movements_done.append(movement)
+                positions_occupied.append(new_pos)
                 if movement_tile.add_on_type == AddOn.HOLE:
                     raise GameOver("You fell into a hole.")
                 if movement_tile.base_type == BaseTile.EMPTY:
@@ -109,9 +121,6 @@ class Player(BaseModel):
                     )
                     print("Walked into chest")
                 self.pos = new_pos
-                movements_done.append(movement)
-                positions_occupied.append(new_pos)
-
                 # handle conveyers
                 if not conveyers_moved and len(turn_movements) == 0:
                     current_tile = grid.get_tile(self.pos)
