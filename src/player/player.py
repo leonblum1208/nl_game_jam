@@ -125,7 +125,7 @@ class Player(BaseModel):
             while turn_movements:
                 movement = turn_movements.pop()
                 new_pos = movement.execute(self.pos)
-                movement_tile = grid.get_tile(new_pos, game_over_messages=game_over_messages)
+                movement_tile = grid.get_tile(new_pos)
                 movements_done.append(movement)
                 positions_occupied.append(new_pos)
                 turn_grids.append(deepcopy(grid))
@@ -146,7 +146,7 @@ class Player(BaseModel):
                 self.pos = new_pos
                 # handle conveyers
                 if not conveyers_moved and len(turn_movements) == 0:
-                    current_tile = grid.get_tile(self.pos, game_over_messages=game_over_messages)
+                    current_tile = grid.get_tile(self.pos)
                     if current_tile.base_type == BaseTile.CONVEYER:
                         direction = grid.rows[self.pos.row].direction
                         steps = grid.rows[self.pos.row].speed
