@@ -5,6 +5,7 @@ from enum import Enum
 from src.art.color import *
 from src.const import *
 from src.art.image import Image
+from src.art.add_ons import ADDON_IMAGES
 
 
 class TilePosition(BaseModel):
@@ -49,8 +50,13 @@ class BaseTileData(TileData):
 
 
 class AddOnData(TileData):
-    rel_width: float = 0.5
-    rel_height: float = 0.5
+    rel_width: float = 0.8
+    rel_height: float = 0.8
+    image_name: Optional[str] = None
+
+    @property
+    def image(self) -> Optional[Image]:
+        return ADDON_IMAGES.get(self.image_name)
 
 
 class BaseTile(Enum):
@@ -63,7 +69,7 @@ class BaseTile(Enum):
 
 class AddOn(Enum):
     NONE: AddOnData = AddOnData()
-    CHEST: AddOnData = AddOnData(color=BROWN)
+    CHEST: AddOnData = AddOnData(color=BROWN, image_name="Kiste")
     HOLE: AddOnData = AddOnData(color=VERY_DARK_GREY)
     LEFT_TURN: AddOnData = AddOnData(color=WHITE)
     RIGHT_TURN: AddOnData = AddOnData(color=WHITE)
@@ -79,9 +85,9 @@ class Tile(BaseModel):
     def add_on(self) -> AddOnData:
         return self.add_on_type.value
 
-    def draw(self, screen: pygame.Surface, pos: TilePosition, image: Optional[Image] = None) -> None:
-        if image:
-            scaled_image_surface = image.scale(size=min(self.base.rel_height, self.base.rel_width))
+    def draw(self, screen: pygame.Surface, pos: TilePosition, base_image: Optional[Image] = None) -> None:
+        if base_image:
+            scaled_image_surface = base_image.scale(size=min(self.base.rel_height, self.base.rel_width))
             scaled_image_rect = scaled_image_surface.get_rect()
             scaled_image_rect.topleft = (pos.x0_plus_gap(rel_width=self.base.rel_width), pos.y0_plus_gap(rel_height=self.base.rel_height))
             screen.blit(scaled_image_surface, scaled_image_rect)
@@ -91,7 +97,12 @@ class Tile(BaseModel):
                 self.base.color,
                 pos.get_rect(self.base.rel_width, self.base.rel_height),
             )
-        if self.add_on.color:
+        if self.add_on.image:
+            scaled_add_on_image_surface = self.add_on.image.scale(size=min(self.add_on.rel_height, self.add_on.rel_width))
+            scaled_add_on_image_rect = scaled_add_on_image_surface.get_rect()
+            scaled_add_on_image_rect.topleft = (pos.x0_plus_gap(rel_width=self.add_on.rel_width), pos.y0_plus_gap(rel_height=self.add_on.rel_height))
+            screen.blit(scaled_add_on_image_surface, scaled_add_on_image_rect)
+        elif self.add_on.color:
             pygame.draw.rect(
                 screen,
                 self.add_on.color,
