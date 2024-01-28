@@ -7,12 +7,14 @@ from src.player.player import Player, PlayerMove, PlayerTurn, Movement
 from src.grid.grid import Grid
 from copy import deepcopy
 
+
 class Game(BaseModel):
     player: Player
     grid: Grid
     movements: List[Movement]
+
     @classmethod
-    def from_player_and_grid(cls, player:Player, grid:Grid) -> "Game":
+    def from_player_and_grid(cls, player: Player, grid: Grid) -> "Game":
         return cls(player=deepcopy(player), grid=deepcopy(grid), movements=[])
 
     def handle_event(self):
@@ -30,5 +32,7 @@ class Game(BaseModel):
                 elif event.key == pygame.K_DOWN:
                     self.movements.append(PlayerMove(step=1))
                 elif event.key == pygame.K_r:
-                    self.player.handle_movement(player_movements=self.movements, grid=self.grid)
+                    self.player.handle_movement(
+                        player_movements=self.movements, grid=self.grid
+                    )
                     self.movements = []

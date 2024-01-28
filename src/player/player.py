@@ -26,7 +26,7 @@ class Movement(BaseModel):
 
 
 class PlayerTurn(Movement):
-    energy_cost:float = 1
+    energy_cost: float = 1
     turn_direction: int
 
     def execute(self, pos: PlayerPosition) -> PlayerPosition:
@@ -37,8 +37,9 @@ class PlayerTurn(Movement):
 
 
 class PlayerMove(Movement):
-    energy_cost:float = 2
+    energy_cost: float = 2
     step: int
+
     def execute(self, pos: PlayerPosition) -> PlayerPosition:
         if pos.face_direction == PlayerDirection.RIGHT:
             col = pos.col - self.step
@@ -52,13 +53,15 @@ class PlayerMove(Movement):
         else:
             col = pos.col
             row = pos.row - self.step
-        
+
         return PlayerPosition(col=col, row=row, face_direction=pos.face_direction)
 
+
 class PlayerForceMove(Movement):
-    energy_cost:float = 0
+    energy_cost: float = 0
     step: int
     direction: PlayerDirection
+
     def execute(self, pos: PlayerPosition) -> PlayerPosition:
         col, row = pos.col, pos.row
         if self.direction == PlayerDirection.RIGHT:
@@ -98,8 +101,12 @@ class Player(BaseModel):
                 if movement_tile.base_type == BaseTile.EMPTY:
                     raise GameOver("You tried to walk on nothing")
                 if movement_tile.add_on_type == AddOn.CHEST:
-                    direction = PlayerDirection.get_direction_from_positions(start=self.pos, end=new_pos)
-                    turn_movements.append(PlayerForceMove(step=1, direction=direction.opposite))
+                    direction = PlayerDirection.get_direction_from_positions(
+                        start=self.pos, end=new_pos
+                    )
+                    turn_movements.append(
+                        PlayerForceMove(step=1, direction=direction.opposite)
+                    )
                     print("Walked into chest")
                 self.pos = new_pos
                 movements_done.append(movement)
@@ -111,22 +118,21 @@ class Player(BaseModel):
                     if current_tile.base_type == BaseTile.CONVEYER:
                         direction = grid.rows[self.pos.row].direction
                         steps = grid.rows[self.pos.row].speed
-                        turn_movements.append(PlayerForceMove(step=steps, direction=direction))
+                        turn_movements.append(
+                            PlayerForceMove(step=steps, direction=direction)
+                        )
                     grid.update(1)
                     conveyers_moved = True
 
         self.movement_history.append(movements_done)
         self.pos_history.append(positions_occupied)
 
-
-        
-
-
     def draw(self, screen):
         scaled_image_surface = self.image.scale(self.size)
         scaled_image_rect = scaled_image_surface.get_rect()
         scaled_image_rect.topleft = (
-            self.pos.col * TILE_WIDTH_PIX + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
+            self.pos.col * TILE_WIDTH_PIX
+            + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
             self.pos.row * TILE_HEIGHT_PIX
             + (TILE_HEIGHT_PIX - scaled_image_rect.height) / 2,
         )

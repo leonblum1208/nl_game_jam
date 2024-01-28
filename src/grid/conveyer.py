@@ -18,7 +18,7 @@ class Row(BaseModel):
     tiles: Deque[Tile]
 
     @property
-    def image(self) -> None:
+    def base_image(self) -> None:
         return None
 
     def update(self, turns: int = 1) -> None:
@@ -26,7 +26,9 @@ class Row(BaseModel):
 
     def draw(self, screen: pygame.Surface, row: int) -> None:
         for col, tile in enumerate(self.tiles):
-            tile.draw(screen, TilePosition(row=row, col=col), image=self.image)
+            tile.draw(
+                screen, TilePosition(row=row, col=col), base_image=self.base_image
+            )
 
     @classmethod
     def from_tile_lists(cls, row: int, row_def: RowDefinition) -> "Row":
@@ -48,11 +50,11 @@ class Conveyer(Row):
     speed: int = 1
 
     @property
-    def image(self) -> Image:
+    def base_image(self) -> Image:
         return CONVEYER_IMAGES[self.direction]
 
     def update(self, turns: int = 1) -> None:
-        if self.direction in (PlayerDirection.LEFT, PlayerDirection.UP) :
+        if self.direction in (PlayerDirection.LEFT, PlayerDirection.UP):
             self.tiles.rotate(-1 * turns)
         elif self.direction in (PlayerDirection.RIGHT, PlayerDirection.DOWN):
             self.tiles.rotate(1 * turns)

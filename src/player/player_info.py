@@ -21,7 +21,9 @@ class PlayerDirection(int, Enum):
         return PlayerDirection.RIGHT
 
     @staticmethod
-    def get_direction_from_positions(start:PlayerPosition, end:PlayerPosition) -> Optional[PlayerDirection]:
+    def get_direction_from_positions(
+        start: PlayerPosition, end: PlayerPosition
+    ) -> Optional[PlayerDirection]:
         dcol = end.col - start.col
         drow = end.row - start.row
         if dcol > 0:
