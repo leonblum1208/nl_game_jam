@@ -16,14 +16,17 @@ start_row = RowDefinition(
     base_tiles=[BaseTile.EMPTY] * 7 + [BaseTile.START],
     add_ons=[AddOn.NONE] * 8,
 )
-conv_row_4 = [AddOn.NONE] * 8
+row_2 = RowDefinition(
+    base_tiles=[BaseTile.PLATFORM.value] * 8,
+    add_ons=[AddOn.NONE.value] * 2 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 3 + [AddOn.HOLE.value] + [AddOn.NONE.value],
+)
+conv_3 = [AddOn.CHEST] * 3 + [AddOn.NONE] + [AddOn.CHEST] * 3 + [AddOn.NONE] * 1
+conv_2 = [AddOn.NONE] * 2 + [AddOn.HOLE] + [AddOn.NONE] * 3 + [AddOn.HOLE] + [AddOn.NONE]
+conv_1 = [AddOn.HOLE] + [AddOn.NONE] * 3 + [AddOn.CHEST] + [AddOn.NONE] * 3
 row_5 = RowDefinition(
     base_tiles=[BaseTile.PLATFORM.value] * 8,
     add_ons=[AddOn.NONE.value] * 2 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 5,
 )
-conv_1 = [AddOn.NONE] * 7 + [AddOn.HOLE]
-conv_2 = [AddOn.NONE] * 2 + [AddOn.CHEST] + [AddOn.NONE] * 5
-conv_3 = [AddOn.NONE] * 3 + [AddOn.HOLE] + [AddOn.NONE] * 4
 conv_4 = [AddOn.NONE] * 8
 end_row = RowDefinition(
     base_tiles=[BaseTile.END] + [BaseTile.EMPTY] * 7,
@@ -33,10 +36,10 @@ end_row = RowDefinition(
 rows = deque(
     [
         Row.from_tile_lists(0, end_row),
-        Conveyer.from_add_on_list(1, conv_1, direction=PlayerDirection.RIGHT),
-        Conveyer.from_add_on_list(2, conv_2, direction=PlayerDirection.RIGHT),
-        Conveyer.from_add_on_list(3, conv_3),
-        Conveyer.from_add_on_list(4, conv_row_4, direction=PlayerDirection.RIGHT),
+        Conveyer.from_add_on_list(1, conv_3),
+        Row.from_tile_lists(2, row_2),
+        Conveyer.from_add_on_list(3, conv_2, direction=PlayerDirection.RIGHT),
+        Conveyer.from_add_on_list(4, conv_1, direction=PlayerDirection.RIGHT),
         Row.from_tile_lists(5, row_5),
         Row.from_tile_lists(6, start_row),
     ]
