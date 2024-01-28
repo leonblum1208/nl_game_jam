@@ -10,51 +10,32 @@ from src.player.player import PlayerDirection
 from src.player.player_info import PlayerPosition
 
 start_row = RowDefinition(
-    base_tiles=[BaseTile.EMPTY.value] * 8
+    base_tiles=[BaseTile.EMPTY.value] * 4
     + [BaseTile.START.value]
     + [BaseTile.EMPTY.value],
-    add_ons=[AddOn.NONE.value] * 10,
+    add_ons=[AddOn.NONE.value] * 6,
 )
 basic_row = RowDefinition(
     base_tiles=[BaseTile.EMPTY.value]
-    + [BaseTile.PLATFORM.value] * 8
+    + [BaseTile.PLATFORM.value] * 4
     + [BaseTile.EMPTY.value],
-    add_ons=[AddOn.NONE.value] * 10,
-)
-chest_row1 = RowDefinition(
-    base_tiles=[BaseTile.EMPTY.value]
-    + [BaseTile.PLATFORM.value] * 8
-    + [BaseTile.EMPTY.value],
-    add_ons=[AddOn.NONE.value] * 3 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 6,
-)
-chest_row2 = RowDefinition(
-    base_tiles=[BaseTile.EMPTY.value]
-    + [BaseTile.PLATFORM.value] * 8
-    + [BaseTile.EMPTY.value],
-    add_ons=[AddOn.NONE.value] * 5 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 4,
-)
-chest_row3 = RowDefinition(
-    base_tiles=[BaseTile.EMPTY.value]
-    + [BaseTile.PLATFORM.value] * 8
-    + [BaseTile.EMPTY.value],
-    add_ons=[AddOn.NONE.value] * 8 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 1,
+    add_ons=[AddOn.NONE.value] * 6,
 )
 end_row = RowDefinition(
     base_tiles=[BaseTile.EMPTY.value]
     + [BaseTile.END.value]
-    + [BaseTile.EMPTY.value] * 8,
-    add_ons=[AddOn.NONE.value] * 10,
+    + [BaseTile.EMPTY.value] * 4,
+    add_ons=[AddOn.NONE.value] * 6,
 )
 
 rows = deque(
     [
         Row.from_tile_lists(0, end_row),
-        Row.from_tile_lists(1, chest_row1),
-        Row.from_tile_lists(2, chest_row1),
-        Row.from_tile_lists(3, chest_row3),
-        Row.from_tile_lists(4, chest_row2),
-        Row.from_tile_lists(5, chest_row1),
-        Row.from_tile_lists(6, start_row),
+        Row.from_tile_lists(1, basic_row),
+        Row.from_tile_lists(2, basic_row),
+        Row.from_tile_lists(3, basic_row),
+        Row.from_tile_lists(4, basic_row),
+        Row.from_tile_lists(5, start_row),
     ]
 )
 
@@ -65,4 +46,4 @@ grid = Grid(
     rows=rows,
 )
 
-player = Player(pos=PlayerPosition(col=7, row=6, face_direction=PlayerDirection.UP))
+player = Player(pos=PlayerPosition(col=4, row=5, face_direction=PlayerDirection.UP))

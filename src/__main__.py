@@ -4,9 +4,10 @@ from src.game import Game
 from src.art.color import *
 from src.const import *
 from src.grid.grid import Grid
+from src.grid.tile import BaseTile
 from src.player.player import Player
 from src.const import GameOver
-from src.levels import level_0, level_1, level_2
+from src.levels import level_0, level_1, level_2, level_firstDraft
 import time
 from copy import deepcopy
 
@@ -20,7 +21,7 @@ game_over_banner = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 game_over_banner.fill((0, 0, 0, 192))
 
 # Set up the game
-cur_level = level_2
+cur_level = level_0
 game = Game.from_player_and_grid(player=cur_level.player, grid=cur_level.grid)
 
 game_over_flag = False
@@ -46,6 +47,8 @@ while True:
     game.grid.draw(screen=screen)
     game.draw_movements(screen=screen)
     game.player.draw(screen=screen, pos=game.player.pos)
+    if game.grid.get_tile(game.player.pos).base_type.value == BaseTile.END:
+        print("Success")
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)
