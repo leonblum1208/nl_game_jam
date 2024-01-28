@@ -54,10 +54,10 @@ class PlayerMove(Movement):
 
     def execute(self, pos: PlayerPosition) -> PlayerPosition:
         if pos.face_direction == PlayerDirection.RIGHT:
-            col = pos.col - self.step
+            col = pos.col + self.step
             row = pos.row
         elif pos.face_direction == PlayerDirection.LEFT:
-            col = pos.col + self.step
+            col = pos.col - self.step
             row = pos.row
         elif pos.face_direction == PlayerDirection.UP:
             col = pos.col
@@ -102,7 +102,7 @@ class Player(BaseModel):
     def image(self) -> Image:
         return BODOS_IMAGES[self.pos.face_direction]
 
-    def handle_movement(self, player_movements: List[Movement], grid: Grid):
+    def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[str]):
         movements_done, positions_occupied, turn_grids = [], [], []
         player_movements_rev = list(reversed(player_movements))
         while player_movements_rev:
@@ -112,14 +112,14 @@ class Player(BaseModel):
             while turn_movements:
                 movement = turn_movements.pop()
                 new_pos = movement.execute(self.pos)
-                movement_tile = grid.get_tile(new_pos)
+                movement_tile = grid.get_tile(new_pos, game_over_messages=game_over_messages)
                 movements_done.append(movement)
                 positions_occupied.append(new_pos)
                 turn_grids.append(deepcopy(grid))
                 if movement_tile.add_on_type == AddOn.HOLE:
-                    raise GameOver("You fell into a hole.")
+                    game_over_messages.append("You fell into a hole.")
                 if movement_tile.base_type == BaseTile.EMPTY:
-                    raise GameOver("You tried to walk on nothing")
+                    game_over_messages.append("You tried to walk on nothing")
                 if movement_tile.add_on_type == AddOn.CHEST:
                     direction = PlayerDirection.get_direction_from_positions(
                         start=self.pos, end=new_pos
@@ -131,7 +131,7 @@ class Player(BaseModel):
                 self.pos = new_pos
                 # handle conveyers
                 if not conveyers_moved and len(turn_movements) == 0:
-                    current_tile = grid.get_tile(self.pos)
+                    current_tile = grid.get_tile(self.pos, game_over_messages=game_over_messages)
                     if current_tile.base_type == BaseTile.CONVEYER:
                         direction = grid.rows[self.pos.row].direction
                         steps = grid.rows[self.pos.row].speed
@@ -140,6 +140,11 @@ class Player(BaseModel):
                         )
                     grid.update(1)
                     conveyers_moved = True
+                if game_over_messages:
+                    self.movement_history.append(movements_done)
+                    self.pos_history.append(positions_occupied)
+                    self.grid_history.append(turn_grids)
+                    return
 
         self.movement_history.append(movements_done)
         self.pos_history.append(positions_occupied)
