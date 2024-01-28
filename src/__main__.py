@@ -21,7 +21,7 @@ game_over_banner = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 game_over_banner.fill((0, 0, 0, 192))
 
 # Set up the game
-cur_level = level_2
+cur_level = level_3
 game = Game.from_player_and_grid(player=cur_level.player, grid=cur_level.grid)
 
 game_over_flag = False
