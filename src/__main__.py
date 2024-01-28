@@ -61,8 +61,10 @@ while True:
             font = pygame.font.Font(None, 50)
             text1 = font.render(f"GAME OVER! {last_msg.message}", True, WHITE)
             text2 = font.render(f"Press R to restart", True, WHITE)
+            text222 = font.render(f"Press S to go to first level", True, WHITE)
             text3 = font.render(f"Press Q to quit", True, WHITE)
-            for row, text in enumerate((text1, text2, text3)):
+
+            for row, text in enumerate((text1, text2, text222, text3)):
                 screen.blit(
                     text,
                     (
@@ -84,6 +86,12 @@ while True:
                             player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
                         )
                         game_over_flag = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                        cur_level_id = 0
+                        game = Game.from_player_and_grid(
+                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                        )
+                        game_over_flag = False
         elif last_msg.type == MessageType.SUCCESS:
             screen.blit(game_over_banner, (0, 0))
             pygame.display.flip()
@@ -95,8 +103,9 @@ while True:
             text12 = font.render(f"", True, WHITE)
             text2 = font.render(f"Press C to continue", True, WHITE)
             text22 = font.render(f"Press R to restart level", True, WHITE)
+            text222 = font.render(f"Press S to go to first level", True, WHITE)
             text3 = font.render(f"Press Q to quit", True, WHITE)
-            for row, text in enumerate((text0, text001, text01,  text1, text12, text2,text22,  text3)):
+            for row, text in enumerate((text0, text001, text01,  text1, text12, text2,text22, text222, text3)):
                 screen.blit(
                     text,
                     (
@@ -114,6 +123,12 @@ while True:
                         pygame.quit()
                         sys.exit()
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                        game = Game.from_player_and_grid(
+                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                        )
+                        game_over_flag = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                        cur_level_id = 0
                         game = Game.from_player_and_grid(
                             player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
                         )
