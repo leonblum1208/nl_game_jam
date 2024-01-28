@@ -1,7 +1,7 @@
 from collections import deque
 from pydantic import BaseModel
 import pygame
-from typing import Deque
+from typing import Deque, List
 
 from src.art.color import WHITE
 from src.grid.conveyer import Row
@@ -23,12 +23,12 @@ class Grid(BaseModel):
         for row in self.rows:
             row.update(turns=turns)
 
-    def get_tile(self, pos: PlayerPosition) -> Tile:
+    def get_tile(self, pos: PlayerPosition, game_over_messages: List[str] = []) -> Tile:
         if (
             pos.col < 0
             or pos.row < 0
             or pos.row >= self.n_rows
             or pos.col >= self.n_cols
         ):
-            raise GameOver("You drove off into the abyss.")
+            game_over_messages.append("You tried to walk on nothing")
         return self.rows[pos.row].tiles[pos.col]
