@@ -3,3 +3,7 @@ HEIGHT = 700
 PIX_PER_TILE = 100
 TILE_WIDTH_PIX = PIX_PER_TILE
 TILE_HEIGHT_PIX = PIX_PER_TILE
+
+
+class GameOver(Exception):
+    pass

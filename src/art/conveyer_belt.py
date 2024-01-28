@@ -1,10 +1,10 @@
 from src.art.image import Image
-from src.grid.conveyer_direction import ConveyerDirection
+from src.player.player_info import PlayerDirection
 from typing import Dict
 
-def get_image(direction:ConveyerDirection):
+def get_image(direction:PlayerDirection):
     return Image.from_path(image_name=f"ConveyerBelt-{direction.name}.png")
 
-CONVEYER_IMAGES: Dict[ConveyerDirection, Image] = {
-    direction: get_image(direction) for direction in ConveyerDirection
+CONVEYER_IMAGES: Dict[PlayerDirection, Image] = {
+    direction: get_image(direction) for direction in PlayerDirection
 }

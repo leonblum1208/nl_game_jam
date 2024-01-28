@@ -6,7 +6,7 @@ import pygame
 from src.grid.tile import AddOn, AddOnData, BaseTileData, Tile, BaseTile, TilePosition
 from src.art.image import Image
 from src.art.conveyer_belt import CONVEYER_IMAGES
-from src.grid.conveyer_direction import ConveyerDirection
+from src.player.player_info import PlayerDirection
 
 
 class RowDefinition(BaseModel):
@@ -44,7 +44,7 @@ class Row(BaseModel):
 
 
 class Conveyer(Row):
-    direction: ConveyerDirection = ConveyerDirection.LEFT
+    direction: PlayerDirection = PlayerDirection.LEFT
     speed: int = 1
 
     @property
@@ -52,14 +52,17 @@ class Conveyer(Row):
         return CONVEYER_IMAGES[self.direction]
 
     def update(self, turns: int = 1) -> None:
-        self.tiles.rotate(self.direction.value * turns)
+        if self.direction in (PlayerDirection.LEFT, PlayerDirection.UP) :
+            self.tiles.rotate(-1 * turns)
+        elif self.direction in (PlayerDirection.RIGHT, PlayerDirection.DOWN):
+            self.tiles.rotate(1 * turns)
 
     @classmethod
     def from_add_on_list(
         cls,
         row: int,
         add_ons: List[AddOn],
-        direction: ConveyerDirection = ConveyerDirection.LEFT,
+        direction: PlayerDirection = PlayerDirection.LEFT,
         speed: int = 1,
     ) -> "Conveyer":
         tiles = deque()

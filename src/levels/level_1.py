@@ -1,7 +1,7 @@
 from collections import deque
 from typing import List
 from src.grid.grid import Grid
-from src.grid.conveyer import Row, Conveyer, RowDefinition, ConveyerDirection
+from src.grid.conveyer import Row, Conveyer, RowDefinition, PlayerDirection
 from src.grid.tile import *
 from src.art.image import Image
 from src.game import Player
@@ -26,7 +26,7 @@ rows = deque(
     [
         Row.from_tile_lists(0, end_row),
         Conveyer.from_add_on_list(1, conv_4),
-        Conveyer.from_add_on_list(2, conv_3, direction=ConveyerDirection.RIGHT),
+        Conveyer.from_add_on_list(2, conv_3, direction=PlayerDirection.RIGHT),
         Conveyer.from_add_on_list(3, conv_2),
         Conveyer.from_add_on_list(4, conv_1),
         Row.from_tile_lists(5, start_row),

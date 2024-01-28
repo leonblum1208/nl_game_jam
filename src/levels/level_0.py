@@ -1,7 +1,7 @@
 from collections import deque
 from typing import List
 from src.grid.grid import Grid
-from src.grid.conveyer import Row, Conveyer, RowDefinition, ConveyerDirection
+from src.grid.conveyer import Row, Conveyer, RowDefinition, PlayerDirection
 from src.grid.tile import *
 from src.art.image import Image
 from src.game import Player

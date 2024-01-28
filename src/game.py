@@ -5,12 +5,15 @@ from pydantic import BaseModel
 from src.grid.grid import Grid
 from src.player.player import Player, PlayerMove, PlayerTurn, Movement
 from src.grid.grid import Grid
-
+from copy import deepcopy
 
 class Game(BaseModel):
     player: Player
     grid: Grid
-    movements: List[Movement] = []
+    movements: List[Movement]
+    @classmethod
+    def from_player_and_grid(cls, player:Player, grid:Grid) -> "Game":
+        return cls(player=deepcopy(player), grid=deepcopy(grid), movements=[])
 
     def handle_event(self):
         for event in pygame.event.get():

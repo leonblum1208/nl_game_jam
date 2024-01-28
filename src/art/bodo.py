@@ -1,5 +1,5 @@
 from src.art.image import Image
-from src.player.player_directions import PlayerDirection
+from src.player.player_info import PlayerDirection
 from typing import Dict
 
 def get_image(direction:PlayerDirection):

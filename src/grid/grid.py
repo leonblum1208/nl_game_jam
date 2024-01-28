@@ -6,6 +6,7 @@ from typing import Deque
 from src.art.color import WHITE
 from src.grid.conveyer import Row
 from src.grid.tile import Tile
+from src.const import GameOver
 from src.player.player_info import PlayerPosition
 
 
@@ -23,4 +24,6 @@ class Grid(BaseModel):
             row.update(turns=turns)
 
     def get_tile(self, pos: PlayerPosition) -> Tile:
+        if pos.col < 0 or pos.row < 0 or pos.row >= self.n_rows or pos.col >= self.n_cols:
+            raise GameOver("You drove off into the abyss.")
         return self.rows[pos.row].tiles[pos.col]
