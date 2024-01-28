@@ -93,14 +93,27 @@ class PlayerForceMove(Movement):
 class Player(BaseModel):
     size: int = 0.8
     pos: PlayerPosition
-    energy: int = 0
+    energy_reserve: int = 0
     movement_history: List[List[Movement]] = []
     pos_history: List[List[PlayerPosition]] = []
     grid_history: List[List[Grid]] = []
 
     @property
-    def image(self) -> Image:
-        return BODOS_IMAGES[self.pos.face_direction]
+    def net_energy_usage(self) -> float:
+        energy_used = -self.energy_reserve
+        for movements in self.movement_history:
+            energy_used += 1
+            for movement in movements:
+                energy_used += movement.energy_cost
+        return energy_used
+
+    @property
+    def n_movements(self) -> int:
+        n_movements = 0
+        for movements in self.movement_history:
+            for _ in movements:
+                n_movements += 1
+        return n_movements
 
     def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[str]):
         movements_done, positions_occupied, turn_grids = [], [], []

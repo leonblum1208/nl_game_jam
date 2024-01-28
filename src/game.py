@@ -52,7 +52,7 @@ class Game(BaseModel):
         for movement in self.movements:
             image = movement.image
             if image:
-                scaled_image_surface = image.scale(0.5)
+                scaled_image_surface = image.scale(0.35)
                 scaled_image_rect = scaled_image_surface.get_rect()
                 scaled_image_rect.topleft = (WIDTH - scaled_image_rect.width, images_drawn * (scaled_image_rect.height * 1.05))
                 screen.blit(scaled_image_surface, scaled_image_rect)

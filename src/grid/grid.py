@@ -1,11 +1,11 @@
 from collections import deque
 from pydantic import BaseModel
 import pygame
-from typing import Deque, List
+from typing import Deque, List, Optional
 
 from src.art.color import WHITE
 from src.grid.conveyer import Row
-from src.grid.tile import Tile
+from src.grid.tile import AddOn, BaseTile, Tile
 from src.const import GameOver
 from src.player.player_info import PlayerPosition
 
@@ -23,12 +23,12 @@ class Grid(BaseModel):
         for row in self.rows:
             row.update(turns=turns)
 
-    def get_tile(self, pos: PlayerPosition, game_over_messages: List[str] = []) -> Tile:
+    def get_tile(self, pos: PlayerPosition) -> Tile:
         if (
             pos.col < 0
             or pos.row < 0
             or pos.row >= self.n_rows
             or pos.col >= self.n_cols
         ):
-            game_over_messages.append("You tried to walk on nothing")
+            return Tile(base_type=BaseTile.EMPTY, add_on_type=AddOn.NONE)
         return self.rows[pos.row].tiles[pos.col]
