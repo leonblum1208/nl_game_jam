@@ -11,6 +11,7 @@ from src.art.const import BODOS_IMAGES, MOVE_IMAGES, TURN_IMAGES
 from src.art.color import *
 from src.const import *
 from pathlib import Path
+from copy import deepcopy
 
 from src.grid.grid import Grid
 from src.grid.tile import AddOn, BaseTile
@@ -18,8 +19,13 @@ from src.player.player_info import PlayerDirection, PlayerPosition
 from src.const import GameOver
 
 
+class MovementInducer(Enum):
+    CONVEYER: int = 1
+    ANY: int = 0
+
 class Movement(BaseModel):
     energy_cost: float = 1
+    induced: MovementInducer = MovementInducer.ANY
 
     def execute(self, pos: PlayerPosition) -> None:
         raise NotImplementedError
@@ -90,13 +96,14 @@ class Player(BaseModel):
     energy: int = 0
     movement_history: List[List[Movement]] = []
     pos_history: List[List[PlayerPosition]] = []
+    grid_history: List[List[Grid]] = []
 
     @property
     def image(self) -> Image:
         return BODOS_IMAGES[self.pos.face_direction]
 
     def handle_movement(self, player_movements: List[Movement], grid: Grid):
-        movements_done, positions_occupied = [], []
+        movements_done, positions_occupied, turn_grids = [], [], []
         player_movements_rev = list(reversed(player_movements))
         while player_movements_rev:
             player_movement = player_movements_rev.pop()
@@ -108,6 +115,7 @@ class Player(BaseModel):
                 movement_tile = grid.get_tile(new_pos)
                 movements_done.append(movement)
                 positions_occupied.append(new_pos)
+                turn_grids.append(deepcopy(grid))
                 if movement_tile.add_on_type == AddOn.HOLE:
                     raise GameOver("You fell into a hole.")
                 if movement_tile.base_type == BaseTile.EMPTY:
@@ -128,21 +136,22 @@ class Player(BaseModel):
                         direction = grid.rows[self.pos.row].direction
                         steps = grid.rows[self.pos.row].speed
                         turn_movements.append(
-                            PlayerForceMove(step=steps, direction=direction)
+                            PlayerForceMove(step=steps, direction=direction, induced=MovementInducer.CONVEYER)
                         )
                     grid.update(1)
                     conveyers_moved = True
 
         self.movement_history.append(movements_done)
         self.pos_history.append(positions_occupied)
+        self.grid_history.append(turn_grids)
 
-    def draw(self, screen):
+    def draw(self, screen, pos: PlayerPosition):
         scaled_image_surface = self.image.scale(self.size)
         scaled_image_rect = scaled_image_surface.get_rect()
         scaled_image_rect.topleft = (
-            self.pos.col * TILE_WIDTH_PIX
+            pos.col * TILE_WIDTH_PIX
             + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
-            self.pos.row * TILE_HEIGHT_PIX
+            pos.row * TILE_HEIGHT_PIX
             + (TILE_HEIGHT_PIX - scaled_image_rect.height) / 2,
         )
         screen.blit(scaled_image_surface, scaled_image_rect)

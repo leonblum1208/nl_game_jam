@@ -58,10 +58,19 @@ while True:
                     )
                     dont_reset = False
 
+    if len(game.player.pos_history) > game.num_pos_sets:
+        game.num_pos_sets += 1
+        for num_sub_movements in range(len(game.player.pos_history[-1])):
+            screen.fill(BLACK)
+            sub_grid = game.player.grid_history[-1][num_sub_movements]
+            sub_grid.draw(screen=screen)
+            game.player.draw(screen=screen, pos=game.player.pos_history[-1][num_sub_movements])
+            pygame.display.flip()
+            time.sleep(0.2)
     screen.fill(BLACK)
     game.grid.draw(screen=screen)
-    game.player.draw(screen=screen)
     game.draw_movements(screen=screen)
+    game.player.draw(screen=screen, pos=game.player.pos)
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)

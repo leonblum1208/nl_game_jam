@@ -13,6 +13,7 @@ class Game(BaseModel):
     player: Player
     grid: Grid
     movements: List[Movement]
+    num_pos_sets: int = 0
 
     @classmethod
     def from_player_and_grid(cls, player: Player, grid: Grid) -> "Game":
