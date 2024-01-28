@@ -25,10 +25,9 @@ while True:
     except GameOver:
         break
 
-    game.handle_event()
     screen.fill(BLACK)
     game.grid.draw(screen=screen)
-    game.player.draw(screen)
+    game.player.draw(screen=screen)
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)

@@ -13,7 +13,7 @@ from src.const import *
 from pathlib import Path
 
 from src.grid.grid import Grid
-from src.grid.tile import AddOn
+from src.grid.tile import AddOn, BaseTile
 from src.player.player_info import PlayerDirection, PlayerPosition
 
 
@@ -61,25 +61,40 @@ class Player(BaseModel):
     size: int = 0.8
     pos: PlayerPosition
     energy: int = 0
-    movement_history: List[Movement] = []
-    pos_history: List[PlayerPosition] = []
+    movement_history: List[List[Movement]] = []
+    pos_history: List[List[PlayerPosition]] = []
 
     @property
     def image(self) -> Image:
         return BODOS_IMAGES[self.pos.face_direction]
 
-    def handle_movement(self, movements: List[Movement], grid: Grid):
-        for movement in movements:
-            new_pos = movement.execute(self.pos)
-            movement_tile = grid.get_tile(new_pos)
-            if movement_tile.add_on_type == AddOn.HOLE:
-                raise GameOver()
-            if movement_tile.add_on_type == AddOn.CHEST:
-                new_pos = self.pos
-                print("Walked into chest")
-            self.pos = new_pos
-            self.movement_history.append(movement)
-            self.pos_history.append(new_pos)
+    def handle_movement(self, player_movements: List[Movement], grid: Grid):
+        tried_movements, valid_positions = [], []
+        while player_movements:
+            player_movement = player_movements.pop()
+            
+            turn_movements = [player_movement]
+            while turn_movements:
+                movement = turn_movements.pop()
+                new_pos = movement.execute(self.pos)
+                movement_tile = grid.get_tile(new_pos)
+                if movement_tile.add_on_type == AddOn.HOLE:
+                    raise GameOver()
+                if movement_tile.add_on_type == AddOn.CHEST:
+                    new_pos = self.pos
+                    print("Walked into chest")
+                self.pos = new_pos
+                tried_movements.append(movement)
+                valid_positions.append(new_pos)
+
+                grid.update(1)
+            
+
+        self.movement_history.append(tried_movements)
+        self.pos_history.append(valid_positions)
+
+
+        
 
 
     def draw(self, screen):

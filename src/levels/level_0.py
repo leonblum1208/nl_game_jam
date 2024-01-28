@@ -6,6 +6,7 @@ from src.grid.tile import *
 from src.art.image import Image
 from src.game import Player
 from src.player.player import PlayerDirection
+from src.player.player_info import PlayerPosition
 
 start_row = RowDefinition(
     base_tiles=[BaseTile.EMPTY.value] * 8 + [BaseTile.START.value] + [BaseTile.EMPTY.value],
@@ -39,4 +40,6 @@ grid = Grid(
     rows=rows,
 )
 
-player = Player(col=7, row=6, face_direction=PlayerDirection.UP)
+player = Player(
+    pos=PlayerPosition(col=7, row=6, face_direction=PlayerDirection.UP)
+)
