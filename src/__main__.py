@@ -23,7 +23,9 @@ game_over_banner.fill((0, 0, 0, 192))
 # Set up the game
 levels = [level_0, level_1, level_2, level_3]
 cur_level_id = 0
-game = Game.from_player_and_grid(player=levels[cur_level_id].player, grid=levels[cur_level_id].grid)
+game = Game.from_player_and_grid(
+    player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+)
 
 game_over_flag = False
 # Game loop
@@ -35,7 +37,9 @@ while True:
 
     if len(game.player.pos_history) > game.num_pos_sets:
         game.num_pos_sets += 1
-        for pos, sub_grid in zip(game.player.pos_history[-1], game.player.grid_history[-1]):
+        for pos, sub_grid in zip(
+            game.player.pos_history[-1], game.player.grid_history[-1]
+        ):
             screen.fill(BLACK)
             sub_grid.draw(screen=screen)
             game.player.draw(screen=screen, pos=pos)
@@ -52,7 +56,7 @@ while True:
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)
-    
+
     if game.game_over_messages:
         last_msg = game.game_over_messages[-1]
         if last_msg.type == MessageType.FAIL:
@@ -83,13 +87,15 @@ while True:
                         sys.exit()
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                         game = Game.from_player_and_grid(
-                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                            player=levels[cur_level_id].player,
+                            grid=levels[cur_level_id].grid,
                         )
                         game_over_flag = False
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
                         cur_level_id = 0
                         game = Game.from_player_and_grid(
-                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                            player=levels[cur_level_id].player,
+                            grid=levels[cur_level_id].grid,
                         )
                         game_over_flag = False
         elif last_msg.type == MessageType.SUCCESS:
@@ -99,18 +105,24 @@ while True:
             text0 = font.render(f"CONGRATULATIONS! {last_msg.message}", True, WHITE)
             text001 = font.render(f"", True, WHITE)
             text01 = font.render(f"SCORE: {int(game.player.score)}", True, WHITE)
-            text1 = font.render(f"Net Energy Usage:{int(game.player.net_energy_usage)} - Num. Movements:{game.player.n_movements}", True, WHITE)
+            text1 = font.render(
+                f"Net Energy Usage:{int(game.player.net_energy_usage)} - Num. Movements:{game.player.n_movements}",
+                True,
+                WHITE,
+            )
             text12 = font.render(f"", True, WHITE)
             text2 = font.render(f"Press C to continue", True, WHITE)
             text22 = font.render(f"Press R to restart level", True, WHITE)
             text222 = font.render(f"Press S to go to first level", True, WHITE)
             text3 = font.render(f"Press Q to quit", True, WHITE)
-            for row, text in enumerate((text0, text001, text01,  text1, text12, text2,text22, text222, text3)):
+            for row, text in enumerate(
+                (text0, text001, text01, text1, text12, text2, text22, text222, text3)
+            ):
                 screen.blit(
                     text,
                     (
                         WIDTH // 2 - text.get_width() // 2,
-                        (HEIGHT/2 // 2 - text.get_height() // 2)
+                        (HEIGHT / 2 // 2 - text.get_height() // 2)
                         + text.get_height() * row * 1.5,
                     ),
                 )
@@ -124,13 +136,15 @@ while True:
                         sys.exit()
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                         game = Game.from_player_and_grid(
-                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                            player=levels[cur_level_id].player,
+                            grid=levels[cur_level_id].grid,
                         )
                         game_over_flag = False
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
                         cur_level_id = 0
                         game = Game.from_player_and_grid(
-                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                            player=levels[cur_level_id].player,
+                            grid=levels[cur_level_id].grid,
                         )
                         game_over_flag = False
                     elif event.type == pygame.KEYDOWN and event.key == pygame.K_c:
@@ -139,6 +153,7 @@ while True:
                             pygame.quit()
                             sys.exit()
                         game = Game.from_player_and_grid(
-                            player=levels[cur_level_id].player, grid=levels[cur_level_id].grid
+                            player=levels[cur_level_id].player,
+                            grid=levels[cur_level_id].grid,
                         )
                         game_over_flag = False

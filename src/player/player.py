@@ -23,6 +23,7 @@ class MovementInducer(Enum):
     CONVEYER: int = 1
     ANY: int = 0
 
+
 class Movement(BaseModel):
     energy_cost: float = 1
     induced: MovementInducer = MovementInducer.ANY
@@ -44,9 +45,11 @@ class PlayerTurn(Movement):
             (pos.face_direction.value + self.turn_direction) % 4
         )
         return PlayerPosition(col=pos.col, row=pos.row, face_direction=face_direction)
+
     @property
     def image(self) -> Optional[Image]:
         return TURN_IMAGES[self.turn_direction]
+
 
 class PlayerMove(Movement):
     energy_cost: float = 2
@@ -71,6 +74,7 @@ class PlayerMove(Movement):
     @property
     def image(self) -> Optional[Image]:
         return MOVE_IMAGES[self.step]
+
 
 class PlayerForceMove(Movement):
     energy_cost: float = 0
@@ -117,9 +121,14 @@ class Player(BaseModel):
 
     @property
     def score(self) -> float:
-        return 1000000/(self.n_movements * self.net_energy_usage)
+        return 1000000 / (self.n_movements * self.net_energy_usage)
 
-    def handle_movement(self, player_movements: List[Movement], grid: Grid, game_over_messages: List[GameOverMessage]):
+    def handle_movement(
+        self,
+        player_movements: List[Movement],
+        grid: Grid,
+        game_over_messages: List[GameOverMessage],
+    ):
         movements_done, positions_occupied, turn_grids = [], [], []
         player_movements_rev = list(reversed(player_movements))
         while player_movements_rev:
@@ -134,11 +143,24 @@ class Player(BaseModel):
                 positions_occupied.append(new_pos)
                 turn_grids.append(deepcopy(grid))
                 if movement_tile.base_type == BaseTile.END:
-                    game_over_messages.append(GameOverMessage(type= MessageType.SUCCESS, message="You reached the finish."))
+                    game_over_messages.append(
+                        GameOverMessage(
+                            type=MessageType.SUCCESS, message="You reached the finish."
+                        )
+                    )
                 if movement_tile.add_on_type == AddOn.HOLE:
-                    game_over_messages.append(GameOverMessage(type=MessageType.FAIL, message="You fell into a hole."))
+                    game_over_messages.append(
+                        GameOverMessage(
+                            type=MessageType.FAIL, message="You fell into a hole."
+                        )
+                    )
                 if movement_tile.base_type == BaseTile.EMPTY:
-                    game_over_messages.append(GameOverMessage(type=MessageType.FAIL, message="You tried to walk on nothing"))
+                    game_over_messages.append(
+                        GameOverMessage(
+                            type=MessageType.FAIL,
+                            message="You tried to walk on nothing",
+                        )
+                    )
                 if movement_tile.add_on_type == AddOn.CHEST:
                     direction = PlayerDirection.get_direction_from_positions(
                         start=self.pos, end=new_pos
@@ -155,7 +177,11 @@ class Player(BaseModel):
                         direction = grid.rows[self.pos.row].direction
                         steps = grid.rows[self.pos.row].speed
                         turn_movements.append(
-                            PlayerForceMove(step=steps, direction=direction, induced=MovementInducer.CONVEYER)
+                            PlayerForceMove(
+                                step=steps,
+                                direction=direction,
+                                induced=MovementInducer.CONVEYER,
+                            )
                         )
                     grid.update(1)
                     conveyers_moved = True
@@ -173,8 +199,7 @@ class Player(BaseModel):
         scaled_image_surface = BODOS_IMAGES[pos.face_direction].scale(self.size)
         scaled_image_rect = scaled_image_surface.get_rect()
         scaled_image_rect.topleft = (
-            pos.col * TILE_WIDTH_PIX
-            + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
+            pos.col * TILE_WIDTH_PIX + (TILE_WIDTH_PIX - scaled_image_rect.width) / 2,
             pos.row * TILE_HEIGHT_PIX
             + (TILE_HEIGHT_PIX - scaled_image_rect.height) / 2,
         )

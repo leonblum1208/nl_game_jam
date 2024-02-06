@@ -3,7 +3,7 @@ from src.player.player_info import PlayerDirection
 from typing import Dict
 
 
-def get_image(direction: PlayerDirection, prefix:str, suffix:str=".png"):
+def get_image(direction: PlayerDirection, prefix: str, suffix: str = ".png"):
     return Image.from_path(image_name=f"{prefix}{direction.name}{suffix}")
 
 

@@ -42,7 +42,9 @@ class Game(BaseModel):
                         self.movements.pop()
                 elif event.key == pygame.K_RETURN:
                     self.player.handle_movement(
-                        player_movements=self.movements, grid=self.grid, game_over_messages=self.game_over_messages
+                        player_movements=self.movements,
+                        grid=self.grid,
+                        game_over_messages=self.game_over_messages,
                     )
                     self.movements = []
             if self.game_over_messages:
@@ -55,6 +57,9 @@ class Game(BaseModel):
             if image:
                 scaled_image_surface = image.scale(0.35)
                 scaled_image_rect = scaled_image_surface.get_rect()
-                scaled_image_rect.topleft = (WIDTH - scaled_image_rect.width, images_drawn * (scaled_image_rect.height * 1.05))
+                scaled_image_rect.topleft = (
+                    WIDTH - scaled_image_rect.width,
+                    images_drawn * (scaled_image_rect.height * 1.05),
+                )
                 screen.blit(scaled_image_surface, scaled_image_rect)
                 images_drawn += 1

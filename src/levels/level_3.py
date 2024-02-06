@@ -9,7 +9,7 @@ from src.player.player import PlayerDirection
 from src.player.player_info import PlayerPosition
 
 basic_row = RowDefinition(
-    base_tiles= [BaseTile.PLATFORM.value] * 8,
+    base_tiles=[BaseTile.PLATFORM.value] * 8,
     add_ons=[AddOn.NONE.value] * 8,
 )
 start_row = RowDefinition(
@@ -18,10 +18,16 @@ start_row = RowDefinition(
 )
 row_2 = RowDefinition(
     base_tiles=[BaseTile.PLATFORM.value] * 8,
-    add_ons=[AddOn.NONE.value] * 2 + [AddOn.CHEST.value] + [AddOn.NONE.value] * 3 + [AddOn.HOLE.value] + [AddOn.NONE.value],
+    add_ons=[AddOn.NONE.value] * 2
+    + [AddOn.CHEST.value]
+    + [AddOn.NONE.value] * 3
+    + [AddOn.HOLE.value]
+    + [AddOn.NONE.value],
 )
 conv_3 = [AddOn.CHEST] * 3 + [AddOn.NONE] + [AddOn.CHEST] * 3 + [AddOn.NONE] * 1
-conv_2 = [AddOn.NONE] * 2 + [AddOn.HOLE] + [AddOn.NONE] * 3 + [AddOn.HOLE] + [AddOn.NONE]
+conv_2 = (
+    [AddOn.NONE] * 2 + [AddOn.HOLE] + [AddOn.NONE] * 3 + [AddOn.HOLE] + [AddOn.NONE]
+)
 conv_1 = [AddOn.HOLE] + [AddOn.NONE] * 3 + [AddOn.CHEST] + [AddOn.NONE] * 3
 row_5 = RowDefinition(
     base_tiles=[BaseTile.PLATFORM.value] * 8,
